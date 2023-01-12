@@ -1,6 +1,4 @@
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -14,15 +12,21 @@ public class Main {
         return scanner.nextLine();
     }
 
+    private static HashSet<String> getBracketsSet(String[] characters) {
+        return new HashSet<>(Arrays.asList(characters));
+    }
+
     private static boolean bracketsAreValid(String input) {
         Stack<String> bracketStack = new Stack<>();
         String[] splitInput = input.split("");
-        String brackets = "(){}[]";
-        String openingBrackets = "({[";
+        HashSet<String> brackets = getBracketsSet("(){}[]".split(""));
+        HashSet<String> openingBrackets = getBracketsSet("({[".split(""));
         HashMap<String, String> bracketPairs = new HashMap<>();
         bracketPairs.put("(", ")");
         bracketPairs.put("{", "}");
         bracketPairs.put("[", "]");
+
+        boolean isValid = true;
 
         for (String character : splitInput) {
             if (!brackets.contains(character)) {
@@ -33,18 +37,20 @@ public class Main {
                 if (openingBrackets.contains(character)) {
                     bracketStack.push(character);
                 } else {
-                    return false;
+                    isValid = false;
+                    break;
                 }
             } else if (openingBrackets.contains(character)) {
                 bracketStack.push(character);
             } else {
                 String topBracket = bracketStack.pop();
                 if (!bracketPairs.get(topBracket).equals(character)) {
-                    return false;
+                    isValid = false;
+                    break;
                 }
             }
         }
 
-        return true;
+        return isValid;
     }
 }
