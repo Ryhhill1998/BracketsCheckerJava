@@ -51,6 +51,10 @@ public class Main {
             }
         }
 
+        if (!bracketStack.isEmpty()) {
+            isValid = false;
+        }
+
         return isValid;
     }
 }
